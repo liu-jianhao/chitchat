@@ -15,9 +15,9 @@ type User struct {
 
 type Session struct {
 	Id        int
-	Uuid      string
+	Uuid      string // 用于存储一个随机生成的唯一ID，服务器会通过cookie把这个ID存储到浏览器里面
 	Email     string
-	UserId    int
+	UserId    int // 用于记录用户表中存储用户信息的行的ID
 	CreatedAt time.Time
 }
 

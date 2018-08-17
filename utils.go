@@ -1,6 +1,7 @@
 package main
 
 import (
+	"chitchat/data"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -9,7 +10,6 @@ import (
 	"net/http"
 	"os"
 	"strings"
-	"web-with-golang/ch2/chitchat/data"
 )
 
 type Configuration struct {
@@ -57,9 +57,11 @@ func error_message(writer http.ResponseWriter, request *http.Request, msg string
 
 // Checks if the user is logged in and has a session, if not err is not nil
 func session(writer http.ResponseWriter, request *http.Request) (sess data.Session, err error) {
+	// 从请求中取出cookie
 	cookie, err := request.Cookie("_cookie")
 	if err == nil {
 		sess = data.Session{Uuid: cookie.Value}
+		// 还要进行第二项检查——访问数据库并核实会话的唯一ID是否存在
 		if ok, _ := sess.Check(); !ok {
 			err = errors.New("Invalid session")
 		}
@@ -79,6 +81,8 @@ func parseTemplateFiles(filenames ...string) (t *template.Template) {
 	return
 }
 
+// 最后一个参数以3个点开头，表示该函数是一个可变参数函数，可在最后的可变参数中接受零个或任意多个值作为参数
+// 注意：可变参数必须是最后一个参数
 func generateHTML(writer http.ResponseWriter, data interface{}, filenames ...string) {
 	var files []string
 	for _, file := range filenames {

@@ -1,8 +1,8 @@
 package main
 
 import (
+	"chitchat/data"
 	"net/http"
-	"web-with-golang/ch2/chitchat/data"
 )
 
 // GET /err?msg=

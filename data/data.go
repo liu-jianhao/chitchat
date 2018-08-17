@@ -14,6 +14,7 @@ var Db *sql.DB
 
 func init() {
 	var err error
+	// 注意：下面的参数根据自己实验主机自行修改
 	Db, err = sql.Open("postgres", "user=chitchat dbname=chitchat password=chitchat sslmode=disable")
 	if err != nil {
 		log.Fatal(err)

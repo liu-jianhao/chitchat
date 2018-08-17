@@ -1,9 +1,9 @@
 package main
 
 import (
+	"chitchat/data"
 	"fmt"
 	"net/http"
-	"web-with-golang/ch2/chitchat/data"
 )
 
 // GET /threads/new
