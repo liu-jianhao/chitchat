@@ -37,4 +37,4 @@ go build
 http://127.0.0.1:8080/
 ```
 即可进入论坛：
-![](https://github.com/liu-jianhao/chitchat/tree/master/chitchat.png)
+![](https://github.com/liu-jianhao/chitchat/tree/master/img/chitchat.png)
