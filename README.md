@@ -4,7 +4,7 @@ ChitChat的数据模型：
 1. User——表示论坛的用户信息
 2. Session——表示论坛用户当前的登录会话
 3. Thread——表示论坛里面的帖子，每一个帖子都记录了多个论坛用户之间的对话
-4. Post——表示用户在帖子里面添加的回复:w
+4. Post——表示用户在帖子里面添加的回复
 
 ## 注意
 如果直接go run 或者 go build 程序会有问题，要修改代码中import有关data包的路径，换成自己机器上的路径
@@ -37,4 +37,4 @@ go build
 http://127.0.0.1:8080/
 ```
 即可进入论坛：
-[](https://github.com/liu-jianhao/chitchat/tree/master/img/chitchat.png)
+![](https://github.com/liu-jianhao/chitchat/tree/master/img/chitchat.png)
