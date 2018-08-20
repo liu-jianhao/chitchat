@@ -52,6 +52,8 @@ func authenticate(writer http.ResponseWriter, request *http.Request) {
 		if err != nil {
 			danger(err, "Cannot create session")
 		}
+		// cookie是一种存储在客户端的、体积较小的信息，这些信息最初都是有服务器通过HTTP响应报文发送的
+		// 每当客户端向服务器发送一个HTTP请求时，cookie都会随着请求被一同发送至服务器
 		// 没有为这个cookie设置过期时间，所以这是一个会话cookie，它将在浏览器关闭时自动被移除
 		// HttpOnly字段被设置成true，意味着这个cookie只能通过HTTP或者HTTPS访问，
 		// 无法通过JavaScript等非HTTP API进行访问
@@ -77,6 +79,7 @@ func logout(writer http.ResponseWriter, request *http.Request) {
 	if err != http.ErrNoCookie {
 		warning(err, "Failed to get cookie")
 		session := data.Session{Uuid: cookie.Value}
+		// 从数据库中删除
 		session.DeleteByUUID()
 	}
 	http.Redirect(writer, request, "/", 302)

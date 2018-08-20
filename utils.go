@@ -22,11 +22,13 @@ type Configuration struct {
 var config Configuration
 var logger *log.Logger
 
+// 为了方便而实现的一个打印函数
 // Convenience function for printing to stdout
 func p(a ...interface{}) {
 	fmt.Println(a)
 }
 
+// 在这个包中（main包），会首先执行init函数
 func init() {
 	loadConfig()
 	file, err := os.OpenFile("chitchat.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
@@ -36,13 +38,16 @@ func init() {
 	logger = log.New(file, "INFO ", log.Ldate|log.Ltime|log.Lshortfile)
 }
 
+// 将配置文件读取到全局变量config中
 func loadConfig() {
 	file, err := os.Open("config.json")
 	if err != nil {
 		log.Fatalln("Cannot open config file", err)
 	}
+	// 根据给定的JSON文件，创建出相应的解码器
 	decoder := json.NewDecoder(file)
 	config = Configuration{}
+	// 将JSON数据解码至config结构
 	err = decoder.Decode(&config)
 	if err != nil {
 		log.Fatalln("Cannot get configuration from file", err)
@@ -55,6 +60,7 @@ func error_message(writer http.ResponseWriter, request *http.Request, msg string
 	http.Redirect(writer, request, strings.Join(url, ""), 302)
 }
 
+// 检查用户是否登录
 // Checks if the user is logged in and has a session, if not err is not nil
 func session(writer http.ResponseWriter, request *http.Request) (sess data.Session, err error) {
 	// 从请求中取出cookie
