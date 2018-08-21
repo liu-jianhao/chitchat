@@ -38,3 +38,10 @@ http://127.0.0.1:8080/
 ```
 即可进入论坛：
 ![](https://github.com/liu-jianhao/chitchat/tree/master/img/chitchat.png)
+
+## 建议阅读顺序
+1. main.go 总体了解整个项目的框架
+2. data/user.go 和 data/thread.go 了解chitchat项目中的四个主要结构包含什么成员，特别要注意session结构
+3. route_....go 这三个文件主要功能就是处理HTTP请求并响应，session结构发挥了重要作用，特别是其中的UUID成员
+4. utils.go 里面有一些在整个项目中用到的函数，在之前遇到其中的函数可以先看
+5. 最后是data包中的文件，主要是那四个结构的方法，里面有数据库的操作
