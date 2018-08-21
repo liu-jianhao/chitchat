@@ -4,6 +4,7 @@ import (
 	"time"
 )
 
+// 用户结构
 type User struct {
 	Id        int
 	Uuid      string
@@ -13,6 +14,7 @@ type User struct {
 	CreatedAt time.Time
 }
 
+// 会话结构，重点！
 type Session struct {
 	Id        int
 	Uuid      string // 用于存储一个随机生成的唯一ID，服务器会通过cookie把这个ID存储到浏览器里面
@@ -21,6 +23,7 @@ type Session struct {
 	CreatedAt time.Time
 }
 
+// 用户结构的方法，创建会话
 // Create a new session for an existing user
 func (user *User) CreateSession() (session Session, err error) {
 	statement := "insert into sessions (uuid, email, user_id, created_at) values ($1, $2, $3, $4) returning id, uuid, email, user_id, created_at"
@@ -34,6 +37,7 @@ func (user *User) CreateSession() (session Session, err error) {
 	return
 }
 
+// 用户结构的方法，获取该用户的会话
 // Get the session for an existing user
 func (user *User) Session() (session Session, err error) {
 	session = Session{}
@@ -42,6 +46,7 @@ func (user *User) Session() (session Session, err error) {
 	return
 }
 
+// 会话结构的方法，检查该回话是否合法
 // Check if session is valid in the database
 func (session *Session) Check() (valid bool, err error) {
 	err = Db.QueryRow("SELECT id, uuid, email, user_id, created_at FROM sessions WHERE uuid = $1", session.Uuid).
@@ -56,6 +61,7 @@ func (session *Session) Check() (valid bool, err error) {
 	return
 }
 
+// 会话结构的方法，根据UUID从数据库中删除该会话
 // Delete session from database
 func (session *Session) DeleteByUUID() (err error) {
 	statement := "delete from sessions where uuid = $1"
@@ -69,6 +75,7 @@ func (session *Session) DeleteByUUID() (err error) {
 	return
 }
 
+// 会话结构的方法，获得拥有该会话的用户
 // Get the user from the session
 func (session *Session) User() (user User, err error) {
 	user = User{}
@@ -77,6 +84,7 @@ func (session *Session) User() (user User, err error) {
 	return
 }
 
+// 从数据库中删除所有会话
 // Delete all sessions from database
 func SessionDeleteAll() (err error) {
 	statement := "delete from sessions"
@@ -84,6 +92,7 @@ func SessionDeleteAll() (err error) {
 	return
 }
 
+// 用户结构的方法，创建一个新用户
 // Create a new user, save user info into the database
 func (user *User) Create() (err error) {
 	// Postgres does not automatically return the last insert id, because it would be wrong to assume
@@ -101,6 +110,7 @@ func (user *User) Create() (err error) {
 	return
 }
 
+// 用户结构的方法，删除用户
 // Delete user from database
 func (user *User) Delete() (err error) {
 	statement := "delete from users where id = $1"
@@ -114,6 +124,7 @@ func (user *User) Delete() (err error) {
 	return
 }
 
+// 用户结构的方法，更新用户信息
 // Update user information in the database
 func (user *User) Update() (err error) {
 	statement := "update users set name = $2, email = $3 where id = $1"
@@ -127,6 +138,7 @@ func (user *User) Update() (err error) {
 	return
 }
 
+// 删除数据库中所有用户
 // Delete all users from database
 func UserDeleteAll() (err error) {
 	statement := "delete from users"
@@ -134,6 +146,7 @@ func UserDeleteAll() (err error) {
 	return
 }
 
+// 获取数据库中所有用户
 // Get all users in the database and returns it
 func Users() (users []User, err error) {
 	rows, err := Db.Query("SELECT id, uuid, name, email, password, created_at FROM users")
@@ -151,6 +164,7 @@ func Users() (users []User, err error) {
 	return
 }
 
+// 根据email获取用户
 // Get a single user given the email
 func UserByEmail(email string) (user User, err error) {
 	user = User{}
@@ -159,6 +173,7 @@ func UserByEmail(email string) (user User, err error) {
 	return
 }
 
+// 根据UUID获取用户
 // Get a single user given the UUID
 func UserByUUID(uuid string) (user User, err error) {
 	user = User{}

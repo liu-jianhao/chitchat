@@ -12,6 +12,7 @@ import (
 
 var Db *sql.DB
 
+// data包中，首先执行这个函数，连接数据库
 func init() {
 	var err error
 	// 注意：下面的参数根据自己实验主机自行修改
@@ -22,6 +23,7 @@ func init() {
 	return
 }
 
+// 创建一个随机的UUID
 // create a random UUID with from RFC 4122
 // adapted from http://github.com/nu7hatch/gouuid
 func createUUID() (uuid string) {
@@ -40,6 +42,7 @@ func createUUID() (uuid string) {
 	return
 }
 
+// 根据给定文本加密
 // hash plaintext with SHA-1
 func Encrypt(plaintext string) (cryptext string) {
 	cryptext = fmt.Sprintf("%x", sha1.Sum([]byte(plaintext)))

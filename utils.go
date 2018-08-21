@@ -95,6 +95,13 @@ func generateHTML(writer http.ResponseWriter, data interface{}, filenames ...str
 		files = append(files, fmt.Sprintf("templates/%s.html", file))
 	}
 
+	// ParseFiles函数对这些模板文件进行语法分析，并创建出相应的模板
+	// 为了捕捉语法分析过程中过程中可能会产生的错误，程序使用了Must函数去包围ParseFiles函数的执行结果
+	// 这样当ParseFiles返回错误时，Must函数会行用户返回相应的错误报告
+	// 以layout.html模板文件为例（见template/layout.html）
+	// 源代码中使用了define动作。这个动作通过文件开头的{{ define "layout" }}和文件结尾的{{ end }}，
+	// 把被包围的文本快定义成layout模板的一部分
+	// 跟在引用模板名字之后的点(.)代表了传递给被引用模板的数据
 	templates := template.Must(template.ParseFiles(files...))
 	templates.ExecuteTemplate(writer, "layout", data)
 }
